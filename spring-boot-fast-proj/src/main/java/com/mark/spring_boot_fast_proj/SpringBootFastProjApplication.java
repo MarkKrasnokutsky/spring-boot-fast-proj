@@ -89,4 +89,9 @@ class RestApiController {
 		}
 		return (coffeeIndex == -1) ? postCoffee(coffee) : coffee;
 	}
+
+	@DeleteMapping("/coffees/{id}")
+	void deleteCoffee(@PathVariable String id) {
+		coffeeList.removeIf(c -> c.getId().equals(id));
+	}
 }
