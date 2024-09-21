@@ -1,11 +1,13 @@
 package com.mark.spring_boot_fast_proj;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,6 +63,23 @@ class Coffee {
 @Repository
 interface CoffeeRepository extends CrudRepository<Coffee, String> {
 
+}
+
+@Component
+class DataLoader {
+	private final CoffeeRepository coffeeRepository;
+	public DataLoader(CoffeeRepository coffeeRepository) {
+		this.coffeeRepository = coffeeRepository;
+	}
+	@PostConstruct
+	private void loadData() {
+		coffeeRepository.saveAll(List.of(
+				new Coffee("Café Cereza"),
+				new Coffee("Café Ganador"),
+				new Coffee("Café Lareño"),
+				new Coffee("Café Três Pontas")
+		));
+	}
 }
 
 @RestController
