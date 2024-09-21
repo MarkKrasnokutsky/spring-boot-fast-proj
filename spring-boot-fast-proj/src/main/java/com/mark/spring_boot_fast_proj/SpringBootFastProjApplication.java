@@ -71,4 +71,10 @@ class RestApiController {
 		}
 		return Optional.empty();
 	}
+
+	@PostMapping("/coffees")
+	Coffee postCoffee(@RequestBody Coffee coffee) {
+		coffeeList.add(coffee);
+		return coffee;
+	}
 }
