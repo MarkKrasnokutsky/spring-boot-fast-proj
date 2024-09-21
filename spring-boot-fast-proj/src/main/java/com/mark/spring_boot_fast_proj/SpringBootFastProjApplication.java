@@ -45,6 +45,7 @@ class Coffee {
 }
 
 @RestController
+@RequestMapping("/coffees")
 class RestApiController {
 	private List<Coffee> coffeeList = new ArrayList<>();
 
@@ -57,12 +58,12 @@ class RestApiController {
 		));
 	}
 
-	@GetMapping("/coffees")
+	@GetMapping()
 	Iterable<Coffee> getCoffees() {
 		return coffeeList;
 	}
 
-	@GetMapping("/coffees/{id}")
+	@GetMapping("/{id}")
 	Optional<Coffee> getCoffeeById(@PathVariable String id) {
 		for (Coffee c: coffeeList) {
 			if (c.getId().equals(id)) {
@@ -72,13 +73,13 @@ class RestApiController {
 		return Optional.empty();
 	}
 
-	@PostMapping("/coffees")
+	@PostMapping()
 	Coffee postCoffee(@RequestBody Coffee coffee) {
 		coffeeList.add(coffee);
 		return coffee;
 	}
 
-	@PutMapping("/coffees/{id}")
+	@PutMapping("/{id}")
 	Coffee putCoffee(@PathVariable String id, @RequestBody Coffee coffee) {
 		int coffeeIndex = -1;
 		for (Coffee c: coffeeList) {
@@ -90,7 +91,7 @@ class RestApiController {
 		return (coffeeIndex == -1) ? postCoffee(coffee) : coffee;
 	}
 
-	@DeleteMapping("/coffees/{id}")
+	@DeleteMapping("/{id}")
 	void deleteCoffee(@PathVariable String id) {
 		coffeeList.removeIf(c -> c.getId().equals(id));
 	}
