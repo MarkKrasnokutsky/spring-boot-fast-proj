@@ -2,13 +2,11 @@ package com.mark.spring_boot_fast_proj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -62,5 +60,15 @@ class RestApiController {
 	@GetMapping("/coffees")
 	Iterable<Coffee> getCoffees() {
 		return coffeeList;
+	}
+
+	@GetMapping("/coffees/{id}")
+	Optional<Coffee> getCoffeeById(@PathVariable String id) {
+		for (Coffee c: coffeeList) {
+			if (c.getId().equals(id)) {
+				return Optional.of(c);
+			}
+		}
+		return Optional.empty();
 	}
 }
