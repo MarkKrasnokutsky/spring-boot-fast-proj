@@ -2,6 +2,8 @@ package com.mark.spring_boot_fast_proj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ class Coffee {
 class RestApiController {
 	private List<Coffee> coffeeList = new ArrayList<>();
 
-	public void RestApiDemoController() {
+	public RestApiController() {
 		coffeeList.addAll(List.of(
 				new Coffee("Café Cereza"),
 				new Coffee("Café Ganador"),
@@ -80,7 +82,8 @@ class RestApiController {
 	}
 
 	@PutMapping("/{id}")
-	Coffee putCoffee(@PathVariable String id, @RequestBody Coffee coffee) {
+	ResponseEntity<Coffee> putCoffee(@PathVariable String id,
+									 @RequestBody Coffee coffee) {
 		int coffeeIndex = -1;
 		for (Coffee c: coffeeList) {
 			if (c.getId().equals(id)) {
@@ -88,7 +91,9 @@ class RestApiController {
 				coffeeList.set(coffeeIndex, coffee);
 			}
 		}
-		return (coffeeIndex == -1) ? postCoffee(coffee) : coffee;
+		return (coffeeIndex == -1) ?
+				new ResponseEntity<>(postCoffee(coffee), HttpStatus.CREATED) :
+				new ResponseEntity<>(coffee, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
